@@ -62,6 +62,26 @@ var getToken = function(token) { //读取Token信息
         }
     })
 }
+router.get('/getAllUsers', (req, res) => {
+    user.find({}, function(err, data) {
+        if (err) {
+            return res.json({
+                code: 504,
+                message: '查询失败'
+            })
+        } else {
+            let sendData = []
+            data.map((item) => {
+                sendData.push({ email: item.email, userName: item.userName })
+            })
+            return res.json({
+                code: 200,
+                message: '查询成功',
+                users: sendData
+            })
+        }
+    })
+})
 
 router.post('/loginByCaptcha', (req, res) => { //通过邮箱验证码注册或登录
     if (regEmail.test(req.body.email)) {
@@ -646,7 +666,7 @@ app.use(expressJwt({
     secret: jwtSecret,
     algorithms: ['HS256']
 }).unless({
-    path: ['/', '/loginByCaptcha', '/getMailCode', '/loginByPassword', '/register', /^\/project\/.*/]
+    path: ['/', '/getAllUsers', '/loginByCaptcha', '/getMailCode', '/loginByPassword', '/register', /^\/project\/.*/]
 }));
 app.use(function(err, req, res, next) {
     if (err.status == 401) {
@@ -657,4 +677,7 @@ app.use(function(err, req, res, next) {
     }
 });
 app.use('/', router);
+// app.listen(port, () => {
+//     console.log(`链接数据库成功，实例运行在 http://localhost:${port}`);
+// });
 module.exports = app;
