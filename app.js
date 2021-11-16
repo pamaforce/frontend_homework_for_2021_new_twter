@@ -7,6 +7,9 @@ const nodemailer = require('nodemailer')
 const smtpTransport = require('nodemailer-smtp-transport')
 const router = express.Router()
 const app = express()
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 const jwtSecret = process.env.jwtSecret;
 const regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
 const port = 3000
