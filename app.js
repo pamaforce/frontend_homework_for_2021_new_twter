@@ -9,7 +9,13 @@ const router = express.Router()
 const app = express()
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+const process = {
+    env: {
+        jwtSecret: 'twt_homework_token',
+        mongoLink: 'mongodb://pamaforce:adminpama@cluster0-shard-00-00.xnsgc.mongodb.net:27017,cluster0-shard-00-01.xnsgc.mongodb.net:27017,cluster0-shard-00-02.xnsgc.mongodb.net:27017/twt?ssl=true&replicaSet=atlas-yrtv0f-shard-0&authSource=admin&retryWrites=true&w=majority',
+        mailKey: 'BSNRVBLADWJMMEQG'
+    }
+}
 const jwtSecret = process.env.jwtSecret;
 const regEmail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
 const port = 3000
@@ -680,7 +686,7 @@ app.use(function(err, req, res, next) {
     }
 });
 app.use('/', router);
-// app.listen(port, () => {
-//     console.log(`链接数据库成功，实例运行在 http://localhost:${port}`);
-// });
+app.listen(port, () => {
+    console.log(`链接数据库成功，实例运行在 http://localhost:${port}`);
+});
 module.exports = app;
